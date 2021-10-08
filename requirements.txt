@@ -1,0 +1,3 @@
+# cat requirements.txt 
+discordsdk==0.2.4
+requests==2.23.0
