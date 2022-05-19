@@ -2,16 +2,13 @@
 run FG with --httpd=8080
 https://pypi.org/project/discordsdk/
 http://localhost:8080/json/
-
 http://localhost:8080/json/position/gear-agl-m
-
-
 https://wiki.flightgear.org/Aircraft_properties_reference
 """
 
-import time, datetime
+import time
 import requests
-import discordsdk as dsdk
+from pypresence import Presence
 
 properties = {
     'altitude': 'position/gear-agl-m',
@@ -23,15 +20,6 @@ properties = {
 
 APPLICATION_ID = 834452760530518027
 
-app = dsdk.Discord(APPLICATION_ID, dsdk.CreateFlags.default)
-
-
-def callback(result):
-    if result == dsdk.Result.ok:
-        pass
-        #print("Successfully set the activity!")
-    else:
-        raise Exception(result)
 
 def get_prop(prop):
     r = requests.get('http://127.0.0.1:8080/json/' + prop)
@@ -51,22 +39,36 @@ def get_all_props():
         altitude += 'ft'
     
     acd = get_prop(properties['aircraft-desc'])
+    #print(acd)
     ac_desc = ' '.join(list(acd[:16].split(' ')[:-1]))
+    ac_desc = acd
 
     airport = get_prop(properties['airport'])
     return ac_desc, altitude, airport
 
 def set_status():
-    activity_manager = app.get_activity_manager()
-    activity = dsdk.Activity()
     ac_desc, altitude, airport = get_all_props()
-    activity.details = f'Flying near {airport} airport'
-    activity.state = f"{ac_desc} {altitude}"
-    activity.assets.large_image = 'logo'
-    activity_manager.update_activity(activity, callback)
+    details = f'Flying at {altitude} near {airport} airport'
+    state = f"{ac_desc}"
+    large_image = 'logo'
+    RPC.update(
+        start=timestart,
+        large_image=large_image,
+        large_text='FlightGear',
+        small_image=large_image,
+        small_text='FlightGear',
+        details=details,
+        state=state,
+        buttons=[
+            {"label": "GitHub", "url": "http://github.com/rdinit/flightgear_discord_RPC"},
+            {"label": "GitHub", "url": "http://github.com/rdinit/flightgear_discord_RPC"}
+            ],
+        instance=False  
+        )
 
-
+RPC = Presence(APPLICATION_ID,pipe=0)  # Initialize the client class
+RPC.connect()
+timestart = time.time()
 while True:
     set_status()
-    app.run_callbacks()
-    time.sleep(2)
+    time.sleep(1)
