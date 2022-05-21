@@ -19,14 +19,27 @@ properties = {
     }
 
 APPLICATION_ID = 834452760530518027
-
+fg_started = False
+run = True
 
 def get_prop(prop):
-    r = requests.get('http://127.0.0.1:8080/json/' + prop)
-    return r.json()['value']
+    global fg_started
+    try:
+        r = requests.get('http://127.0.0.1:8080/json/' + prop)
+        if not fg_started:
+            timestart = time.time()
+            fg_started = True
+        return r.json()['value']
+    except requests.exceptions.ConnectionError:
+        if fg_started:
+            run = False
+        #print(fg_started)
+        return
+    
 
-
+get_prop('sim/description')
 def get_all_props():
+    
     altitude = get_prop(properties['altitude-ft'])
     altitude = int(altitude*10)/10
     if altitude < -0.1:
@@ -47,10 +60,16 @@ def get_all_props():
     return ac_desc, altitude, airport
 
 def set_status():
-    ac_desc, altitude, airport = get_all_props()
-    details = f'Flying at {altitude} near {airport} airport'
-    state = f"{ac_desc}"
-    large_image = 'logo'
+    if fg_started:
+        ac_desc, altitude, airport = get_all_props()
+        details = f'Flying at {altitude} near {airport} airport'
+        state = f"{ac_desc}"
+        large_image = 'logo'
+    else:
+        large_image = 'logo'
+        details = 'In FG launcher'
+        state = 'Preparation for the flight'
+        get_prop('sim/description')
     RPC.update(
         start=timestart,
         large_image=large_image,
@@ -69,6 +88,6 @@ def set_status():
 RPC = Presence(APPLICATION_ID,pipe=0)  # Initialize the client class
 RPC.connect()
 timestart = time.time()
-while True:
+while run:
     set_status()
     time.sleep(1)
