@@ -12,7 +12,7 @@ on:
 #    tags:
 #      - 'v*'
 jobs:
-  build for windows:
+  build-for-windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
 
     - uses: softprops/action-gh-release@v1
     
-  build for linux:
+  build-for-linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
