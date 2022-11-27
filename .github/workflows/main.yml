@@ -20,10 +20,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: PyInstaller Windows
       run: |
-        python -m pip install --upgrade pip
+        cd src
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
-          cd src
           pyinstaller main.py -y --onefile
       
     - uses: actions/upload-artifact@v2
