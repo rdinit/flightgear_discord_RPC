@@ -26,7 +26,7 @@ jobs:
           cd src \
           pyinstaller main.py --clean -y --onefile
       
-    - uses: actions/upload-artifact@v2\
+    - uses: actions/upload-artifact@v2
       with:
         name: fg_rpc.exe
         path: src/dist/windows/main/main.exe # or path/to/artifact
