@@ -1,16 +1,16 @@
 name: Package exe with PyInstaller - Windows
 
 
-on:
-  push:
-    branches: [ test ]
-  pull_request:
-    branches: [ test ]
-
 #on:
 #  push:
-#    tags:
-#      - 'v*'
+#    branches: [ test ]
+#  pull_request:
+#    branches: [ test ]
+
+on:
+  push:
+    tags:
+      - 'v*'
 jobs:
   build-for-windows:
     runs-on: windows-latest
@@ -26,7 +26,7 @@ jobs:
       
     - uses: actions/upload-artifact@v2
       with:
-        name: fg_rpc.exe
+        name: fg_rpc_for_windows
         path: src/dist/main.exe
 
     - uses: softprops/action-gh-release@v1
@@ -45,7 +45,7 @@ jobs:
       
     - uses: actions/upload-artifact@v2
       with:
-        name: fg_rpc.exe
+        name: fg_rpc_for_linux
         path: src/dist/main
 
     - uses: softprops/action-gh-release@v1
