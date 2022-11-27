@@ -20,12 +20,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: PyInstaller Windows
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
-          cd src
-          pyinstaller main.py --clean -y --onefile
+        run: python -m pip install --upgrade pip;
+          pip install -r requirements.txt;
+          pip install pyinstaller;
+          cd src;
+          pyinstaller main.py --clean -y --onefile;
       
     - uses: actions/upload-artifact@v2
         name: fg_rpc.exe
