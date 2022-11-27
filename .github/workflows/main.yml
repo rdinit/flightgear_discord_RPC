@@ -20,5 +20,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: fg_rpc
+        name: fg_rpc.exe
         path: src/dist/windows # or path/to/artifact
+    - name: Release
+        uses: softprops/action-gh-release@v1
