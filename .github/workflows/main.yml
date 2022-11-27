@@ -13,8 +13,7 @@ on:
 #      - 'v*'
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -29,7 +28,8 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: fg_rpc.exe
-        path: src/dist # or path/to/artifact
+        path: src/dist/main/main.exe
+
 
     #- uses: softprops/action-gh-release@v1
     
