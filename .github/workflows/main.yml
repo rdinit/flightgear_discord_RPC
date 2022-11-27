@@ -23,15 +23,16 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
           pyinstaller main.py -y --onefile
+          move dist/main.exe dist/fg_rpc.exe
       
     - uses: actions/upload-artifact@v2
       with:
         name: windows_exe
-        path: src/dist/main.exe
+        path: src/dist/fg_rpc.exe
 
     - uses: softprops/action-gh-release@v1
       with:
-        files: src/dist/main.exe
+        files: src/dist/fg_rpc.exe
 
     
   build-for-linux:
@@ -45,12 +46,13 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
           pyinstaller main.py -y --onefile
+          move dist/main dist/fg_rpc
       
     - uses: actions/upload-artifact@v2
       with:
         name: linux_app
-        path: src/dist/main
+        path: src/dist/fg_rpc
 
     - uses: softprops/action-gh-release@v1
       with:
-        files: src/dist/main
+        files: src/dist/fg_rpc
