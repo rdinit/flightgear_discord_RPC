@@ -12,24 +12,43 @@ on:
 #    tags:
 #      - 'v*'
 jobs:
-  build:
+  build for windows:
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: PyInstaller Windows
+    - name: pip
       run: |
         cd src
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller main.py -y --onefile
+    - name: pyinstaller
+        run: pyinstaller main.py --clean -y --onefile
       
     - uses: actions/upload-artifact@v2
       with:
         name: fg_rpc.exe
-        path: src/dist
+        path: src/dist/main.exe
 
+    - uses: softprops/action-gh-release@v1
+    
+  build for linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: pip
+      run: |
+        cd src
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+    - name: pyinstaller
+        run: pyinstaller main.py --clean -y --onefile
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: fg_rpc.exe
+        path: src/dist/main
 
-    #- uses: softprops/action-gh-release@v1
+    - uses: softprops/action-gh-release@v1
     
