@@ -1,9 +1,17 @@
 name: Package exe with PyInstaller - Windows
 
+
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [ test ]
+  pull_request:
+    branches: [ test ]
+
+
+#on:
+#  push:
+#    tags:
+#      - 'v*'
 jobs:
   build:
 
@@ -12,14 +20,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: PyInstaller Windows
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: src
-
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+          cd src
+          pyinstaller main.py --clean -y --onefile
+      
     - uses: actions/upload-artifact@v2
-      with:
         name: fg_rpc.exe
         path: src/dist/windows/main/main.exe # or path/to/artifact
 
-    - uses: softprops/action-gh-release@v1
+    #- uses: softprops/action-gh-release@v1
     
