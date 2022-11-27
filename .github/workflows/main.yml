@@ -46,7 +46,7 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
           pyinstaller main.py -y --onefile
-          move dist/main dist/fg_rpc
+          mv dist/main dist/fg_rpc
       
     - uses: actions/upload-artifact@v2
       with:
