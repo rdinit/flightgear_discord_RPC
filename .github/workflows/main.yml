@@ -29,9 +29,10 @@ jobs:
         name: windows_exe
         path: src/dist/main.exe
 
-   - uses: softprops/action-gh-release@v1
+    - uses: softprops/action-gh-release@v1
       with:
         files: src/dist/main.exe
+
     
   build-for-linux:
     runs-on: ubuntu-latest
@@ -53,4 +54,3 @@ jobs:
     - uses: softprops/action-gh-release@v1
       with:
         files: src/dist/main
-    
