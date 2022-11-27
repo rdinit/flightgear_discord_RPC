@@ -1,7 +1,11 @@
 name: Package exe with PyInstaller - Windows
 
 
-
+on:
+  push:
+    branches: [ test ]
+  pull_request:
+    branches: [ test ]
 
 #on:
 #  push:
