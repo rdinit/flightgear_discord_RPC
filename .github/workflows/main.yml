@@ -1,24 +1,58 @@
 name: Package exe with PyInstaller - Windows
 
+
+#on:
+#  push:
+#    branches: [ test ]
+#  pull_request:
+#    branches: [ test ]
+
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+    tags:
+      - 'v*'
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  build-for-windows:
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - name: PyInstaller Windows
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: src
-
+    - name: pip
+      run: |
+        cd src
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+          pyinstaller main.py -y --onefile
+          move dist/main.exe dist/fg_rpc.exe
+      
     - uses: actions/upload-artifact@v2
       with:
-        name: fg_rpc
-        path: src/dist/windows # or path/to/artifact
+        name: windows_exe
+        path: src/dist/fg_rpc.exe
+
+    - uses: softprops/action-gh-release@v1
+      with:
+        files: src/dist/fg_rpc.exe
+
+    
+  build-for-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: pip
+      run: |
+        cd src
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+          pyinstaller main.py -y --onefile
+          mv dist/main dist/fg_rpc
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: linux_app
+        path: src/dist/fg_rpc
+
+    - uses: softprops/action-gh-release@v1
+      with:
+        files: src/dist/fg_rpc
